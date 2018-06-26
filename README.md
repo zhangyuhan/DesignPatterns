@@ -81,10 +81,6 @@
 
 
 
-
-
-
-
 设计模式的六大原则
 
 1、开闭原则（Open Close Principle）
