@@ -4,6 +4,7 @@ import cn.com.chubb.designPattern.factory.shape.Circle;
 import cn.com.chubb.designPattern.factory.shape.Rectangle;
 import cn.com.chubb.designPattern.factory.shape.Shape;
 import cn.com.chubb.designPattern.factory.shape.ShapeEnum;
+import cn.com.chubb.designPattern.factory.shape.ShapeEnumOne;
 import cn.com.chubb.designPattern.factory.shape.Square;
 
 public class ShapeFactory {
@@ -22,12 +23,12 @@ public class ShapeFactory {
 		}
 		return null;
 	}
-	
-	//使用枚举来替代获取对象类型的判断
+
+	// 使用枚举来替代获取对象类型的判断
 	public Shape getShapeOne(ShapeEnum shapeEnum) {
-		
+
 		Shape shape = null;
-		
+
 		switch (shapeEnum) {
 		case CIRCLE:
 			shape = new Circle();
@@ -41,8 +42,51 @@ public class ShapeFactory {
 		default:
 			break;
 		}
-		
+
 		return shape;
 	}
-	
+
+	// 使用反射替换if else 和 switch 等判断
+	public Shape getShapeTwo(ShapeEnumOne shapeEnumOne) {
+
+		Shape shape = null;
+		try {
+			shape = (Shape) Class.forName("cn.com.chubb.designPattern.factory.shape." + shapeEnumOne.getName())
+					.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return shape;
+	}
+
+	// 使用范型来替换实现通用工厂模型
+	@SuppressWarnings("unchecked")
+	public <T> T getShapeThree(Enum<?> shapeEnum) {
+
+		T obj = null;
+		try {
+			obj = (T) Class.forName(shapeEnum.toString())
+					.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return obj;
+	}
+
 }
